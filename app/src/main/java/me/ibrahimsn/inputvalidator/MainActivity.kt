@@ -18,23 +18,25 @@ class MainActivity : AppCompatActivity() {
         val editText = findViewById<EditText>(R.id.editText)
         val button = findViewById<Button>(R.id.button)
 
+        val password = "123456"
+        val confirmPassword = "123456"
         val text = "lorem ipsum dolor"
 
         val validator = InputValidator(arrayOf(
-            Validator(editText).notEmpty().min(2).max(3).startsWith("a").endsWith("b"),
-            Validator(text).notEmpty().email()
-        ))
+            Validator(0, password).notEmpty(),
+            Validator(1, confirmPassword).notEmpty(),
+            Validator(2, text).notEmpty().min(2).max(50).startsWith("l").endsWith("r"),
+            Validator(3, editText).notEmpty().email()
+        )).completes(0,1)
 
         validator.setOnValidationListener(object: ValidationListener {
             override fun onValidated(validationResult: InputValidator.ValidationResult) {
                 if (!validationResult.isValid)
-                    for (error in validationResult.errors)
-                        Log.d("###", error)
+                    for (error in validationResult.errors.keys)
+                        Log.d("###", "[$error]: ${validationResult.errors[error]}")
             }
         })
 
-        button.setOnClickListener {
-            validator.validate()
-        }
+        button.setOnClickListener { validator.validate() }
     }
 }
