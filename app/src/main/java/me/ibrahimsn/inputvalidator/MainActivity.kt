@@ -25,15 +25,19 @@ class MainActivity : AppCompatActivity() {
         val validator = InputValidator(arrayOf(
             Validator(0, password).notEmpty(),
             Validator(1, confirmPassword).notEmpty(),
-            Validator(2, text).notEmpty().min(2).max(50).startsWith("l").endsWith("r"),
+            Validator(2, text).notEmpty().min(3).max(50).startsWith("l").endsWith("r"),
             Validator(3, editText).notEmpty().email()
         )).completes(0,1)
+
+        val results = validator.validate()
+
+        //OR
 
         validator.setOnValidationListener(object: ValidationListener {
             override fun onValidated(validationResult: InputValidator.ValidationResult) {
                 if (!validationResult.isValid)
-                    for (error in validationResult.errors.keys)
-                        Log.d("###", "[$error]: ${validationResult.errors[error]}")
+                    for (key in validationResult.errors.keys)
+                        Log.d("###", "[$key]: ${validationResult.errors[key]}")
             }
         })
 
