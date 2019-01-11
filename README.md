@@ -13,7 +13,7 @@ allprojects {
     }
 }
 dependencies {
-      implementation 'com.github.ibrahimsn98:InputValidator:1.0'
+      implementation 'com.github.ibrahimsn98:InputValidator:1.1'
 }
 ```
 
