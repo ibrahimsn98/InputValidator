@@ -4,7 +4,7 @@ import android.widget.EditText
 
 class Validator {
 
-    val validated = Validated(0, "", "")
+    val validated = Validated(0, "", true)
 
     constructor(id: Int, field: EditText) {
         validated.id = id
@@ -17,69 +17,65 @@ class Validator {
     }
 
     fun notEmpty(): Validator {
-        if (validated.field == "" && !hasError())
-            validated.error = "This field can't be empty!"
+        if (validated.field == "")
+            validated.valid = false
 
         return this
     }
 
     fun email(): Validator {
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(validated.field).matches() && !hasError())
-            validated.error = "This field must be an email!"
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(validated.field).matches())
+            validated.valid = false
 
         return this
     }
 
     fun numeric(): Validator {
-        if (validated.field.toIntOrNull() == null && !hasError())
-            validated.error = "This field must numeric!"
+        if (validated.field.toIntOrNull() == null)
+            validated.valid = false
 
         return this
     }
 
     fun min(min: Int): Validator {
-        if (validated.field.length < min && !hasError())
-            validated.error = "This field can have a minimum of $min characters!"
+        if (validated.field.length < min)
+            validated.valid = false
 
         return this
     }
 
     fun max(max: Int): Validator {
-        if (validated.field.length > max && !hasError())
-            validated.error = "This field can have a maximum of $max characters!"
+        if (validated.field.length > max)
+            validated.valid = false
 
         return this
     }
 
     fun startsWith(pattern : String): Validator {
-        if (!validated.field.startsWith(pattern) && !hasError())
-            validated.error = "This field must start with $pattern!"
+        if (!validated.field.startsWith(pattern))
+            validated.valid = false
 
         return this
     }
 
     fun endsWith(pattern : String): Validator {
-        if (!validated.field.endsWith(pattern) && !hasError())
-            validated.error = "This field must end with $pattern!"
+        if (!validated.field.endsWith(pattern))
+            validated.valid = false
 
         return this
     }
 
     fun phoneNumber(): Validator {
-        if (!validated.field.matches("^[+]?[0-9]{10,13}\$".toRegex()))
-            validated.error = "This field must be a phone number!"
+        if (!validated.field.matches("^[+][0-9]{10,14}\$".toRegex()))
+            validated.valid = false
 
         return this
     }
 
     fun regex(pattern: String): Validator {
         if (!validated.field.matches(pattern.toRegex()))
-            validated.error = "Regex error!"
+            validated.valid = false
 
         return this
-    }
-
-    private fun hasError(): Boolean {
-        return validated.error != ""
     }
 }

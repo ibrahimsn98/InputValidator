@@ -10,10 +10,11 @@ class InputValidator(private val validators: Array<Validator>) {
         val result = ValidationResult(true, mutableMapOf())
 
         for (validator in validators) {
-            val error = validator.validated.error
-            if (error != "") {
+            val isValid = validator.validated.valid
+
+            if (!isValid) {
                 result.isValid = false
-                result.errors[validator.validated.id] = error
+                result.errors[validator.validated.id] = result.isValid
             }
         }
 
@@ -31,7 +32,7 @@ class InputValidator(private val validators: Array<Validator>) {
             throw Exception("Completed field id's can't be null!")
 
         if (val0.field != val1.field)
-            val1.error = "This field must be same with the field $id0"
+            val1.valid = false
 
         return this
     }
@@ -48,5 +49,5 @@ class InputValidator(private val validators: Array<Validator>) {
         this.validationListener = validationListener
     }
 
-    data class ValidationResult(var isValid: Boolean, val errors: MutableMap<Int, String>)
+    data class ValidationResult(var isValid: Boolean, val errors: MutableMap<Int, Boolean>)
 }
