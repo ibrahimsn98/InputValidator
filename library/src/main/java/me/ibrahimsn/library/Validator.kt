@@ -66,7 +66,7 @@ class Validator {
     }
 
     fun phoneNumber(): Validator {
-        if (!validated.field.matches("^[+][0-9]{10,14}\$".toRegex()))
+        if (!validated.field.matches("^[+]?[0-9]{10,14}\$".toRegex()))
             validated.valid = false
 
         return this
